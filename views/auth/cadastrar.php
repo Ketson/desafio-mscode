@@ -4,6 +4,15 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 session_start();
 
+$erro = null;
+
+if (isset($_SESSION['erro'])) {
+
+  $erro = $_SESSION['erro'];
+
+  session_destroy();
+}
+
 ?>
 
 <!doctype html>
@@ -21,7 +30,7 @@ session_start();
 </head>
 
 <body style="height: 100%;">
-    <main class="bg-dark d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <main class="bg-danger d-flex justify-content-center align-items-center" style="height: 100vh;">
 
         <div class="container-fluid">
             <div class="row ">
@@ -33,6 +42,11 @@ session_start();
 
                         <form action="../../actions/auth/cadastrar.php" method="POST">
                             <div class="card-body">
+                                <?php if ($erro != null) { ?>
+                                    <div class="alert alert-danger">
+                                        <?php echo $erro ?>
+                                    </div>
+                                <?php } ?>
 
                                 <div class="form-group">
                                     <label for="nome">Nome Completo</label>
@@ -98,10 +112,7 @@ session_start();
                                 </div>
 
                                 <div class="form-row">
-                                    <div class="col-6">
-                                        <a class="btn btn-primary w-100" href="login.php">Login</a>
-                                    </div>
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <button type="submit" class="btn btn-success w-100">Cadastrar</button>
                                     </div>
                                 </div>
@@ -124,7 +135,78 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+
     -->
+
+    <!-- Adicionando JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+    <!-- Adicionando Javascript -->
+    <script>
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#rua").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#uf").val("");
+                $("#ibge").val("");
+            }
+
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if (validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#rua").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+                        $("#ibge").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#rua").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                                $("#ibge").val(dados.ibge);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

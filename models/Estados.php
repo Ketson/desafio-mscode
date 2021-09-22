@@ -23,15 +23,22 @@ class Estados
         return $this->mysqlModel->buscar($where);
     }
 
+    /*recebe o nome do estado como parametro, busca ele no banco
+    */
+
     public function getEstado($nome){
         $existe = $this->buscarEstadosPorNome($nome);
-
+        //se existir alguma coisa no array, se retornou, vai retonarnar o primeiro
         if(count($existe) > 0){
             return $existe[0];
+
+            //se não existir cadastra
         }else{
             $arrayEstado = [
                 'nome' => $nome
             ];
+
+            //e ja busca de novo retornando
             $this->cadastrarEstados($arrayEstado);
 
             return $this->buscarEstadosPorNome($nome)[0];

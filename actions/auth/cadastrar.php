@@ -16,10 +16,27 @@ $cidadesModel = new Cidades();
 $bairrosModel = new Bairros();
 $enderecosModel = new Enderecos();
 
+//validações
+$existeEmail = $usuariosModel->buscarPorEmail($_POST['email']);
+if(count($existeEmail) > 0){
+    $_SESSION['erro'] = 'Email já cadastrado!';
+    header('Location: http://localhost/challenge/views/auth/cadastrar.php');
+    
+}
+
+$existeCPF = $usuariosModel->buscarPorCPF($_POST['cpf']);
+if(count($existeCPF) > 0){
+    $_SESSION['erro'] = 'CPF já cadastrado!';
+    header('Location: http://localhost/challenge/views/auth/cadastrar.php');
+}
+
+/*antes de chegar em endereço, resolvemos estado, cidade, bairro */
 $estado = $estadosModel->getEstado($_POST['estado']);
 
 $cidade = $cidadesModel->getCidade($_POST['cidade'], $estado['id']);
 
+
+//quando chega aqui a gente já tem o bairro cadastrado caso n tinha, e caso ja tivesse ja tinha pegado o id
 $bairro = $bairrosModel->getBairro($_POST['bairro'], $cidade['id']);
 
 $arrayEndereco = [
@@ -39,6 +56,9 @@ $arrayUsuario = [
     'imagem' => $_POST['foto'],
     'email' => $_POST['email'],
     'cpf' => $_POST['cpf'],
-    'endereco_id' => $endereco['id']
+    'enderecos_id' => $endereco['id']
 ];
+
+$usuariosModel->cadastrarUsuarios($arrayUsuario);
+header('Location: http://localhost/challenge/views/auth/cadastrar.php');
 
