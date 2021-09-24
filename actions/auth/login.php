@@ -16,10 +16,14 @@ $email = $_POST['email'];
 $senha = $_POST['senha'];
 
 //lógica
-if($email == 'admin@admin.com' AND $senha == '123456'){
+if($email != 'admin@admin.com' || $senha != '123456'){
+    $_SESSION['erro'] = 'Usuário ou senha inválidos';
+    header('Location: http://localhost/challenge/views/auth/login.php');
+    
+}else{
     $_SESSION['autentificado'] = true;
     header('Location: http://localhost/challenge/views/auth/listar.php');
 }
 
-$_SESSION['erro'] = 'Usuário ou senha inválidos';
-header('Location: http://localhost/challenge/views/auth/login.php');
+
+

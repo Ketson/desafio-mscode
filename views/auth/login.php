@@ -59,10 +59,7 @@ if (isset($_SESSION['erro'])) {
               </div>
               <div class="card-footer">
                 <div class="row">
-                  <div class="col-md-6">
-                    <a href="http://127.0.0.1/SistemaJogos/views/auth/cadastrar.php" class="btn btn-primary btn-block">Cadastre-se</a>
-                  </div>
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <button class="btn btn-success btn-block">Login</button>
                   </div>
                 </div>

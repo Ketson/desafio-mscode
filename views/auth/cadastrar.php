@@ -46,8 +46,7 @@ if (isset($_SESSION['erro'])) {
                                     <div class="alert alert-danger">
                                         <?php echo $erro ?>
                                     </div>
-                                <?php } ?>
-
+                                <?php }?>
                                 <div class="form-group">
                                     <label for="nome">Nome Completo</label>
                                     <input type="text" class="form-control" id="nome" name="nome" required>
