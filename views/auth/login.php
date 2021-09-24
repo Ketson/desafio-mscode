@@ -60,7 +60,7 @@ if (isset($_SESSION['erro'])) {
               <div class="card-footer">
                 <div class="row">
                   <div class="col-md-12">
-                    <button class="btn btn-success btn-block">Login</button>
+                    <button class="btn btn-success btn-block">Entrar</button>
                   </div>
                 </div>
               </div>

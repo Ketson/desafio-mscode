@@ -17,6 +17,11 @@ class Estados
         return $this->mysqlModel->inserir($dados);
     }
 
+    public function buscarPorId($Id){
+        $where = "id = $Id";
+        return $this->mysqlModel->buscar($where)[0];
+    }
+
     public function buscarEstadosPorNome(string $nome)
     {
         $where = "nome = '$nome'";

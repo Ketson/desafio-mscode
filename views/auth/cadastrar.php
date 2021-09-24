@@ -8,9 +8,9 @@ $erro = null;
 
 if (isset($_SESSION['erro'])) {
 
-  $erro = $_SESSION['erro'];
+    $erro = $_SESSION['erro'];
 
-  session_destroy();
+    session_destroy();
 }
 
 ?>
@@ -46,7 +46,7 @@ if (isset($_SESSION['erro'])) {
                                     <div class="alert alert-danger">
                                         <?php echo $erro ?>
                                     </div>
-                                <?php }?>
+                                <?php } ?>
                                 <div class="form-group">
                                     <label for="nome">Nome Completo</label>
                                     <input type="text" class="form-control" id="nome" name="nome" required>
@@ -141,6 +141,7 @@ if (isset($_SESSION['erro'])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!-- Adicionando Javascript -->
+
     <script>
         $(document).ready(function() {
 

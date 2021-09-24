@@ -21,4 +21,10 @@ class Enderecos
         $where = "rua = '$rua' AND numero = '$numero' AND cep = '$cep' AND complemento = '$complemento' AND bairros_id = $bairroId";
         return $this->mysqlModel->buscar($where)[0];
     }
+
+    //pra mostrar o endereço precisa o ID que ta cadastrado no banco
+    public function buscarPorId($Id){
+        $where = "id = $Id";
+        return $this->mysqlModel->buscar($where)[0];
+    }
 }

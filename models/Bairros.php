@@ -17,6 +17,11 @@ class Bairros
         return $this->mysqlModel->inserir($dados);
     }
 
+    public function buscarPorId($Id){
+        $where = "id = $Id";
+        return $this->mysqlModel->buscar($where)[0];
+    }
+
     public function buscarPorNomeCidadeId($nome, $cidadeId)
     {
         $where = "nome = '$nome' AND cidades_id = $cidadeId";

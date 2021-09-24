@@ -5,23 +5,52 @@ session_start();
 
 //Imports
 require_once('../../models/Usuarios.php');
-//require_once('../actions/auth/middleware.php');
-//verificaUsuarioLogado();
+require_once('../../models/Enderecos.php');
+require_once('../../models/Bairros.php');
+require_once('../../models/Cidades.php');
+require_once('../../models/Estados.php');
 
 //Instâncias
 
 $usuariosModel = new Usuarios();
+$enderecosModel = new Enderecos();
+$bairrosModel = new Bairros();
+$cidadesModel = new Cidades();
+$estadosModel = new Estados();
+
 $usuarios = $usuariosModel->buscarTodos();
+
+
 
 //Variaveis
 
 
 //Lógica
 
+//mascara cpf
+function mask($val, $mask)
+{
+    $maskared = '';
+    $k = 0;
+    for ($i = 0; $i <= strlen($mask) - 1; ++$i) {
+        if ($mask[$i] == '#') {
+            if (isset($val[$k])) {
+                $maskared .= $val[$k++];
+            }
+        } else {
+            if (isset($mask[$i])) {
+                $maskared .= $mask[$i];
+            }
+        }
+    }
+
+    return $maskared;
+}
+
 
 ?>
 <!doctype html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <!-- Required meta tags -->
@@ -83,14 +112,29 @@ $usuarios = $usuariosModel->buscarTodos();
                             <tbody>
 
                                 <?php foreach ($usuarios as $usuario) { ?>
-                                    <tr>
-
+                                    <?php
+                                    //busca o endereço daquele usuario
+                                        $endereco = $enderecosModel->buscarPorId($usuario['enderecos_id']);
+                                        $bairro = $bairrosModel->buscarPorId($endereco['bairros_id']);
+                                        $cidade = $cidadesModel->buscarPorId($bairro['cidades_id']);
+                                        $estado = $estadosModel->buscarPorId($cidade['estados_id']);
+                                    ?>
+                                    <tr> 
                                         <td><?php echo $usuario['id']; ?></td>
                                         <td><?php echo $usuario['nomeCompleto']; ?></td>
-                                        <td><?php echo $usuario['dataNascimento']; ?></td>
+                                        <td><?php echo date("d/m/Y", strtotime($usuario['dataNascimento'])); ?></td>
                                         <td><?php echo $usuario['email']; ?></td>
-                                        <td><?php echo $usuario['cpf']; ?></td>
-                                        <td>ffffffffffffffffff</td>
+                                        <td><?php echo mask($usuario['cpf'], '###.###.###-##'); ?></td>
+                                        <td>
+                                           Rua: <?php echo ($endereco['rua'])?>,
+                                            N°: <?php echo ($endereco['numero'])?><br>
+                                            CEP: <?php echo ($endereco['cep'])?><br>
+                                            Complemento: <?php echo ($endereco['complemento'])?>
+                                            Bairro: <?php echo ($bairro['nome'])?><br>
+                                            Cidade: <?php echo ($cidade['nome'])?><br>
+                                            Estado: <?php echo ($estado['nome'])?><br>
+                                        </td>
+
                                         </td>
                                         <td>
                                             <span class="badge badge-pill badge-success">Sim</span>
@@ -100,7 +144,7 @@ $usuarios = $usuariosModel->buscarTodos();
                                             
                                             <div class="btn-group" role="group" aria-label="Exemplo básico">
                                             <a class="btn btn-primary btn-sm" href="">Editar</a>
-                                            <a class="btn btn-danger btn-sm" href="">Excluir</a>
+                                            <a class="btn btn-danger btn-sm" href="../../actions//auth//deletar.php?=<?php echo $usuario['id']?>">Excluir</a>
                                             
                                             </div>
 

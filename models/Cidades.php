@@ -17,6 +17,11 @@ class Cidades
         return $this->mysqlModel->inserir($dados);
     }
 
+    public function buscarPorId($Id){
+        $where = "id = $Id";
+        return $this->mysqlModel->buscar($where)[0];
+    }
+
     public function buscarPorNomeEstadoId($nome, $estadoId)
     {
         $where = "nome = '$nome' AND estados_id = $estadoId";
