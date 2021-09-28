@@ -25,6 +25,7 @@ if(count($existeEmail) > 0){
     
 }
 
+
 $existeCPF = $usuariosModel->buscarPorCPF($_POST['cpf']);
 if(count($existeCPF) > 0){
     $_SESSION['erro'] = 'CPF já cadastrado!';
