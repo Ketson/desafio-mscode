@@ -27,4 +27,9 @@ class Enderecos
         $where = "id = $Id";
         return $this->mysqlModel->buscar($where)[0];
     }
+
+    public function deletarEnderecoPorId($id){
+        $where = "id = $id";
+        return $this->mysqlModel->deletar($where);
+    }
 }

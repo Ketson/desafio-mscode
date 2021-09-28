@@ -59,7 +59,7 @@ function mask($val, $mask)
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-
+    
     <title>MS </title>
 </head>
 
@@ -144,7 +144,7 @@ function mask($val, $mask)
                                             
                                             <div class="btn-group" role="group" aria-label="Exemplo básico">
                                             <a class="btn btn-primary btn-sm" href="">Editar</a>
-                                            <a class="btn btn-danger btn-sm" href="../../actions//auth//deletar.php?=<?php echo $usuario['id']?>">Excluir</a>
+                                            <a href="../../actions/auth/deletar.php?id=<?php echo $usuario['id']?>" class="btn btn-danger btn-sm " onclick="return confirm('Deseja excluir esse usuário?');">Excluir</a>
                                             
                                             </div>
 

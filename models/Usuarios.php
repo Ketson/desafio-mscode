@@ -33,4 +33,16 @@ class Usuarios
         $where = "cpf = '$cpf'";
         return $this->mysqlModel->buscar($where);
     }
+
+    public function buscarPorId($id)
+    {
+        $where = "id = $id";
+        return $this->mysqlModel->buscar($where)[0];
+    }
+
+    public function deletarUsuarioPorId($id)
+    {
+        $where = "id = $id";
+        return $this->mysqlModel->deletar($where);
+    }
 }
