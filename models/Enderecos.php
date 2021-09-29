@@ -32,4 +32,11 @@ class Enderecos
         $where = "id = $id";
         return $this->mysqlModel->deletar($where);
     }
+
+    public function update(array $dados, $id){
+        
+        $where = "id = $id";
+  
+        return $this->mysqlModel->atualizar($dados,$where);
+      }
 }

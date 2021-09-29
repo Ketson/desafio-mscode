@@ -28,6 +28,13 @@ class Cidades
         return $this->mysqlModel->buscar($where);
     }
 
+    public function update(array $dados, $id){
+        
+        $where = "id = $id";
+  
+        return $this->mysqlModel->atualizar($dados,$where);
+      }
+
     public function getCidade($nome, $estadoId)
     {
         $existe = $this->buscarPorNomeEstadoId($nome, $estadoId);

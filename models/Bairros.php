@@ -28,6 +28,13 @@ class Bairros
         return $this->mysqlModel->buscar($where);
     }
 
+    public function update(array $dados, $id){
+        
+        $where = "id = $id";
+  
+        return $this->mysqlModel->atualizar($dados,$where);
+      }
+
     public function getBairro($nome, $cidadeId)
     {
         $existe = $this->buscarPorNomeCidadeId($nome,$cidadeId);

@@ -28,6 +28,13 @@ class Estados
         return $this->mysqlModel->buscar($where);
     }
 
+    public function update(array $dados, $id){
+        
+        $where = "id = $id";
+  
+        return $this->mysqlModel->atualizar($dados,$where);
+      }
+
     /*recebe o nome do estado como parametro, busca ele no banco
     */
 

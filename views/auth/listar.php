@@ -163,7 +163,7 @@ function mask($val, $mask)
     <?php foreach ($usuarios as $usuario) { ?>
         <!-- Modal -->
         <div class="modal fade" id="editar<?= $usuario['id'] ?>" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editarModalLabel">Editar dados</h5>
@@ -171,11 +171,12 @@ function mask($val, $mask)
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="../../actions/auth/cadastrar.php" method="POST">
+                    <form action="../../actions/auth/editar.php" method="POST">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="nome">Nome Completo</label>
                                 <input type="text" class="form-control" id="nome" name="nome" value="<?= $usuario['nomeCompleto'] ?>">
+                                <input type="hidden" name="id" value="<?= $usuario['id'] ?>">
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -235,11 +236,11 @@ function mask($val, $mask)
                             </div>
 
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
+                            <button type="submit" class="btn btn-primary">Salvar</button>
+                        </div>
                     </form>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sair</button>
-                        <button type="button" class="btn btn-primary">Salvar</button>
-                    </div>
                 </div>
             </div>
         </div>
