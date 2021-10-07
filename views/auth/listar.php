@@ -4,11 +4,13 @@ error_reporting(E_ALL);
 session_start();
 
 //Imports
+
 require_once('../../models/Usuarios.php');
 require_once('../../models/Enderecos.php');
 require_once('../../models/Bairros.php');
 require_once('../../models/Cidades.php');
 require_once('../../models/Estados.php');
+
 
 //Instâncias
 
@@ -18,34 +20,9 @@ $bairrosModel = new Bairros();
 $cidadesModel = new Cidades();
 $estadosModel = new Estados();
 
+//Buscar todos usuarios no banco de dados
 $usuarios = $usuariosModel->buscarTodos();
 
-
-
-//Variaveis
-
-
-//Lógica
-
-//mascara cpf
-function mask($val, $mask)
-{
-    $maskared = '';
-    $k = 0;
-    for ($i = 0; $i <= strlen($mask) - 1; ++$i) {
-        if ($mask[$i] == '#') {
-            if (isset($val[$k])) {
-                $maskared .= $val[$k++];
-            }
-        } else {
-            if (isset($mask[$i])) {
-                $maskared .= $mask[$i];
-            }
-        }
-    }
-
-    return $maskared;
-}
 
 
 ?>
@@ -65,16 +42,13 @@ function mask($val, $mask)
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="listar.php">Home</a>
+        <a class="navbar-brand" href="">Página inicial</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="usuarios/listar.php">Gerenciar Usuarios </a>
-                </li>
 
             </ul>
             <a class="btn btn-outline-danger my-2 my-sm-0" href="../../actions/auth/logout.php">Sair</a>
@@ -85,6 +59,7 @@ function mask($val, $mask)
             <div class="col-12 pt-5">
                 <div class="card">
                     <div class="card-header">
+                        <?php include('../auth/alertas/alerts.php')?>
                         <div class="row">
                             <div class="col-9">
                                 <h3>Listagem de inscritos</h3>
@@ -99,6 +74,7 @@ function mask($val, $mask)
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
+                                    <th scope="col">Foto</th>
                                     <th scope="col">Nome</th>
                                     <th scope="col">Nascimento</th>
                                     <th scope="col">Email</th>
@@ -113,7 +89,7 @@ function mask($val, $mask)
 
                                 <?php foreach ($usuarios as $usuario) { ?>
                                     <?php
-                                    //busca o endereço daquele usuario
+                                    //busca o endereço daquele usuario, e fazendo uma busca direto, passando o id do usuario
                                     $endereco = $enderecosModel->buscarPorId($usuario['enderecos_id']);
                                     $bairro = $bairrosModel->buscarPorId($endereco['bairros_id']);
                                     $cidade = $cidadesModel->buscarPorId($bairro['cidades_id']);
@@ -121,10 +97,11 @@ function mask($val, $mask)
                                     ?>
                                     <tr>
                                         <td><?php echo $usuario['id']; ?></td>
+                                        <td><img width="50px" height="50px" src="<?php echo $usuario['imagem']?>"></td>
                                         <td><?php echo $usuario['nomeCompleto']; ?></td>
                                         <td><?php echo date("d/m/Y", strtotime($usuario['dataNascimento'])); ?></td>
                                         <td><?php echo $usuario['email']; ?></td>
-                                        <td><?php echo mask($usuario['cpf'], '###.###.###-##'); ?></td>
+                                        <td><?php echo $usuario['cpf']?></td>
                                         <td>
                                             Rua: <?php echo ($endereco['rua']) ?>,
                                             N°: <?php echo ($endereco['numero']) ?><br>
@@ -196,13 +173,14 @@ function mask($val, $mask)
                                     <input type="email" class="form-control" id="email" name="email" value="<?= $usuario['email'] ?>">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="foto">Foto</label>
-                                    <input type="file" class="form-control" id="foto" name="foto" value="<?= $usuario['imagem'] ?>">
+                                    <label for="imagem">Foto</label>
+                                    <input type="file" class="form-control" id="imagem" name="imagem" value="<?= $usuario['imagem'] ?>">
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
                                         <label for="cep">CEP</label>
                                         <input type="text" class="form-control" id="cep" name="cep" value="<?= $endereco['cep'] ?>">
+                                        
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="rua">Rua</label>
@@ -258,6 +236,7 @@ function mask($val, $mask)
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
     -->
+    
 </body>
 
 </html>

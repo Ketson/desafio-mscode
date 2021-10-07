@@ -52,4 +52,17 @@ class Usuarios
 
       return $this->mysqlModel->atualizar($dados,$where);
     }
+
+    public function verificaFoto($postfoto, $tamanhofoto)
+    {
+        if (!isset($postfoto) OR $postfoto == '') {
+            return false;
+        }
+
+        if (intval($tamanhofoto) <= 0) {
+            return false;
+        }
+        
+        return true;
+    }
 }

@@ -4,6 +4,14 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 session_start();
 
+$erro = null;
+
+if (isset($_SESSION['erro'])) {
+
+  $erro = $_SESSION['erro'];
+
+  session_destroy();
+}
 
 ?>
 <!doctype html>
@@ -28,12 +36,21 @@ session_start();
         <div class="col-6 offset-3">
           <div class="card bd-light rounded">
             <div class="card-header">
-              Administrador
+              Cadastrar administrador
             </div>
-            <form method="POST" action="../../actions/auth/login.php">
+            <form method="POST" action="../../../actions/auth/Admin/cadastrarAdmin.php">
               <div class="card-body">
 
-                <?php include('../auth/alertas/alerts.php')?>
+                <?php if ($erro != null) { ?>
+                  <div class="alert alert-danger">
+                    <?php echo $erro ?>
+                  </div>
+                <?php } ?>
+
+                <div class="form-group">
+                  <label>Nome</label>
+                  <input type="nome" required name="nome" class="form-control" />
+                </div>
 
                 <div class="form-group">
                   <label>E-mail</label>
@@ -47,11 +64,8 @@ session_start();
               </div>
               <div class="card-footer">
                 <div class="row">
-                  <div class="col-md-6">
-                    <button class="btn btn-success btn-block">Entrar</button>
-                  </div>
-                  <div class="col-md-6">
-                    <a href="../auth/Admin/cadastrarAdmin.php" class="btn btn-primary btn-block">Cadastrar</a>
+                  <div class="col-md-12">
+                    <button  class="btn btn-primary btn-block">Cadastrar</button>
                   </div>
                 </div>
               </div>

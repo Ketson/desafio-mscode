@@ -7,25 +7,47 @@ session_start();
 
 
 //imports
-require_once('../../models/Usuarios.php');
+require_once('../../models/Admin.php');
 
 //instancias
-$usuariosModel = new Usuarios();
+$adminsModel = new Admin();
 
 
 //inputs
-$email = $_POST['email'];
-$senha = $_POST['senha'];
+$email = filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
+$senha = filter_input(INPUT_POST,'senha',FILTER_SANITIZE_NUMBER_INT);
 
-//lógica
-if($email != 'admin@admin.com' || $senha != '123456'){
+$existeAdmin = $adminsModel->buscarPorEmail($_POST['email']);
+if(count($existeAdmin) <= 0){
     $_SESSION['erro'] = 'Usuário ou senha inválidos';
     header('Location: http://localhost/challenge/views/auth/login.php');
-    
+}
+
+if($_POST['senha'] != base64_decode($existeAdmin[0]['senha'])){
+    $_SESSION['erro'] = 'Usuário ou senha inválidos';
+    header('Location: http://localhost/challenge/views/auth/login.php');
+}else{
+    $_SESSION['autentificado'] = true;
+    header('Location: http://localhost/challenge/views/auth/listar.php');
+
+}
+
+
+
+
+/*$verificarAdmin = $adminsModel->buscarAdmin($_POST['email'],$_POST['senha']);
+
+if(count($verificarAdmin) <= 0){
+    $_SESSION['erro'] = 'Usuário ou senha inválidos';
+    header('Location: http://localhost/challenge/views/auth/login.php');
 }else{
     $_SESSION['autentificado'] = true;
     header('Location: http://localhost/challenge/views/auth/listar.php');
 }
+*/
+
+
+
 
 
 

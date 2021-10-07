@@ -4,14 +4,6 @@ ini_set('display_errors', true);
 error_reporting(E_ALL);
 session_start();
 
-$erro = null;
-
-if (isset($_SESSION['erro'])) {
-
-    $erro = $_SESSION['erro'];
-
-    session_destroy();
-}
 
 ?>
 
@@ -30,23 +22,19 @@ if (isset($_SESSION['erro'])) {
 </head>
 
 <body style="height: 100%;">
-    <main class="bg-danger d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <main class="d-flex justify-content-center align-items-center" style="height: 100vh; background: #ac1925;">
 
         <div class="container-fluid">
             <div class="row ">
                 <div class="col-6 offset-3">
                     <div class="card bd-light rounded">
                         <div class="card-header">
-                            Formulário de inscrição MSCode
+                            Inscrição MSCode
                         </div>
 
-                        <form action="../../actions/auth/cadastrar.php" method="POST">
+                        <form action="../../actions/auth/cadastrar.php" method="POST" enctype="multipart/form-data">
                             <div class="card-body">
-                                <?php if ($erro != null) { ?>
-                                    <div class="alert alert-danger">
-                                        <?php echo $erro ?>
-                                    </div>
-                                <?php } ?>
+                            <?php include('./alertas/alerts.php')?>
                                 <div class="form-group">
                                     <label for="nome">Nome Completo</label>
                                     <input type="text" class="form-control" id="nome" name="nome" required>
@@ -60,7 +48,7 @@ if (isset($_SESSION['erro'])) {
 
                                     <div class="form-group col-md-6">
                                         <label for="cpf">CPF</label>
-                                        <input type="text" class="form-control" id="cpf" name="cpf" required>
+                                        <input type="text" class="form-control" id="cpf" name="cpf" maxlength="14" required>
                                     </div>
                                 </div>
 
@@ -70,8 +58,8 @@ if (isset($_SESSION['erro'])) {
                                         <input type="email" class="form-control" id="email" name="email" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="foto">Foto</label>
-                                        <input type="file" class="form-control" id="foto" name="foto" required>
+                                        <label for="imagem">Foto</label>
+                                        <input type="file" class="form-control" id="imagem" name="imagem" accept="image/*" required>
                                     </div>
                                 </div>
 
@@ -137,10 +125,20 @@ if (isset($_SESSION['erro'])) {
 
     -->
 
+
     <!-- Adicionando JQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
     <!-- Adicionando Javascript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+    <script>
+        $(document).ready(function() {
+            var $seuCampoCpf = $("#cpf");
+            $seuCampoCpf.mask('000.000.000-00', {
+                reverse: true
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function() {
